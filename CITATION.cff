@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "kakutani_pharma: Kakutani indices of conformational ensembles from molecular-dynamics trajectories (DKI, CKI, spectral fingerprint, pocket-centred finite-size scaling)"
+type: software
+authors:
+  - family-names: Chen
+    given-names: Zhengyi
+    affiliation: "Guangxi Key Laboratory of Drug Discovery and Optimization, School of Pharmacy, Guilin Medical University, Guilin 541199, P. R. China"
+    email: chenzhengyi@glmc.edu.cn
+  - family-names: Chen
+    given-names: Ruqing
+    affiliation: "GUT Geoservice Inc., Montreal, Québec, Canada"
+    email: ruqing@hotmail.com
+date-released: 2026-09-29
+version: 0.1.0
+license: MIT
+keywords:
+  - Kakutani dichotomy
+  - molecular dynamics
+  - conformational ensembles
+  - Ledoit-Wolf shrinkage
+  - Bhattacharyya distance
+  - allostery
+  - finite-size scaling
+  - block bootstrap
+  - computational pharmacology

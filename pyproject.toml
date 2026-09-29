@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kakutani_pharma"
+version = "0.1.0"
+description = "Kakutani indices (DKI, CKI, spectral fingerprint, shell scaling) of conformational ensembles from molecular-dynamics trajectories"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+  { name = "Zhengyi Chen", email = "chenzhengyi@glmc.edu.cn" },
+  { name = "Ruqing Chen", email = "ruqing@hotmail.com" },
+]
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26", "scipy>=1.13", "matplotlib>=3.8"]
+
+[project.optional-dependencies]
+md = ["mdtraj>=1.9"]
+test = ["pytest>=7", "scikit-learn>=1.3"]
+
+[tool.setuptools]
+packages = ["kakutani_pharma"]

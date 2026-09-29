@@ -1,0 +1,40 @@
+==============================================================================
+kakutani_pharma benchmark - four-domain allosteric protein (A1-1 | S-1 | S-2 | A1-2), synthetic trajectories
+120 residues, 6000 frames per state, ANM cutoff 13.0 A, seed 20260929
+==============================================================================
+
+[model] pocket (S-1) residues: 9, effector-site (A1-2) residues: 7, interface residues S-1|S-2|A1-2: 77; slowest apo mode lambda = 0.1117
+  trajectories simulated in 14 s
+
+[1] Featurizer
+  dihedral binning agrees with the generating metastable states in a fraction 0.999997 of all residue-frames (well noise 12 deg, basin boundaries >= 60 deg away)  PASS
+  max |empirical rotamer occupancy - equilibrium| = 0.048 (finite, correlated sampling)
+  joint alignment of 5 x 6000 frames with random rigid motions: max |d_ij(ref) - d_ij(model)| = 0.308 A, RMSF correlation with the model = 0.9962  PASS
+  integrated autocorrelation time of the leading principal component: 106.6 frames -> bootstrap block 214
+
+[2] Estimators (ligand state versus apo)
+  split-trajectory DKI null (apo first half vs second half): 0.4012
+  sample covariance: CKI = inf with 6000 frames (six rigid-body null directions after alignment), inf with 200 frames < 3N = 360
+  Ledoit-Wolf: finite in both cases (short run: CKI = 66.18, shrinkage 0.157)
+  state      DKI       CKI     mean      cov     comm      rot delta_LW top-10 DKI residues in pocket/site/interface
+      S   0.4209     3.848    0.774    3.074    0.005    3.068   0.0042                                         9/10
+      E   2.7009     7.210    1.430    5.780    1.307    4.473   0.0065                                        10/10
+    S+E   2.6832     7.573    1.761    5.812    1.326    4.486   0.0060                                        10/10
+      R   0.1862     3.099    0.051    3.048    0.012    3.036   0.0047                                    (control)
+  Acceptance: DKI top-10 residues lie in the perturbed set (energy shift >= 0.1 kT) for S and E (>= 8/10), control DKI 0.1862 < 3 x split null  PASS
+  Acceptance: rotation part D_rot >= 0 in every comparison (Fiedler)  PASS
+
+[3] Pocket-centred shell scaling with split-trajectory null and block bootstrap
+  radii (A): 0.0, 5.1, 8.5, 10.4, 13.5, 15.1, 18.6, 21.9, 27.7, 33.5; distal fit r >= 15.0 A; block 214 frames; 40 replicates
+      S: excess CKI at r = 33.5 A (all residues) = 0.813 [0.770, 1.202]; pocket shell 0.721; distal gamma = 0.118 [0.052, 0.299]  (109 s)
+      E: excess CKI at r = 33.5 A (all residues) = 4.112 [3.828, 4.389]; pocket shell 0.204; distal gamma = 1.361 [1.302, 1.463]  (108 s)
+    S+E: excess CKI at r = 33.5 A (all residues) = 4.492 [4.287, 4.857]; pocket shell 1.114; distal gamma = 0.881 [0.804, 0.915]  (109 s)
+      R: excess CKI at r = 33.5 A (all residues) = 0.010 [-0.101, 0.118]; pocket shell 0.014; distal gamma = n/a (excess consistent with 0)  (111 s)
+  Acceptance: control excess CI contains 0  PASS; ligand excess CI excludes 0 (S, E, S+E)  PASS
+  Acceptance: distal exponent separates the allosteric effector from the local substrate (CI_E above CI_S)  PASS
+
+[4] Figures
+  figures/fig07_correlation_maps.{png,pdf}, figures/fig07_kakutani_diagnostics.{png,pdf}
+
+runtime 472 s
+OVERALL ACCEPTANCE: PASS

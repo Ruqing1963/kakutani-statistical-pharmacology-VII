@@ -1,6 +1,8 @@
-# kakutani_pharma
+# Statistical Pharmacology via Kakutani Dichotomy VII — `kakutani_pharma`
 
-**Kakutani indices of conformational ensembles from molecular-dynamics trajectories: DKI, CKI, the spectral fingerprint F_L, and pocket-centred finite-size scaling**
+**The kakutani_pharma Pipeline, Ledoit–Wolf Regularized CKI, Split-Trajectory Null Subtraction, and Shell-Scaling Exponents in Multi-Domain Allostery**
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23039869.svg)](https://doi.org/10.5281/zenodo.23039869)
 
 Zhengyi Chen<sup>1</sup>, Ruqing Chen<sup>2</sup>
 
@@ -11,7 +13,16 @@ Part VII of the series *Statistical Pharmacology via Kakutani Dichotomy* (Paper 
 
 ## Status
 
-The package and its end-to-end benchmark are complete. The 8 unit tests and all acceptance tests of the benchmark pass (`results/benchmark_report.txt`).
+The package, its end-to-end benchmark and the paper (`paper/paper07_kakutani_pharma_pipeline.pdf`, 16 pages) are complete. The 8 unit tests and all acceptance tests of the benchmark pass (`results/benchmark_report.txt`). The analytic companion `code/paper07_compute_tables.py` writes `results/paper07_tables_summary.txt` and the table bodies `results/paper07_table{1,2,2b,3,4,4b}_rows.tex`.
+
+Main results of the paper:
+
+- **Rigidity (Proposition 2.2).** `dim ker H = 6` if and only if the elastic network is infinitesimally rigid. Two rigid halves joined by `c` springs give `12 - c`, which explains the 11 zero modes of a first benchmark geometry: S-1 and S-2 had no contacts and were joined by one backbone spring.
+- **Shrinkage (Theorem 3.1).** Ledoit–Wolf is positive definite for any number of frames, and `CKI = D_mean + D_comm + D_rot` with all three terms nonnegative (Fiedler).
+- **Null subtraction (Theorem 4.1).** The split-trajectory excess is unbiased under the null up to `O(tau/h)`; the replica falls from 3.10 to 0.010 [-0.101, 0.118]. Resampling the whole trajectory before splitting leaks about 40 % of the blocks across halves and inflates the excess by about +3.0, so none of the four leaky intervals contains its estimate.
+- **Duplicate-frame bias (Proposition 4.2).** Within-half replicates keep about 64.5 % distinct blocks. The bootstrap bias is +0.126 for the substrate, and bias-shifted and basic intervals are reported next to the percentile interval.
+- **Shell scaling (Theorem 5.1, Corollary 5.2).** The population curve is nondecreasing and has a plateau for perturbations confined to the pocket. Corollary 5.2 proves that the plateau is exact for the substrate model, even in the rigid-body gauge: the likelihood ratio depends on the pocket coordinates only. The computed curve is 0.776914237794 at every shell, so the population exponent is 0. The sample exponents are 0.12 for the substrate, 1.36 for the effector and 0.88 for both.
+
 
 **The benchmark uses synthetic trajectories with known ground truth. The package has not yet been applied to a real protein–ligand MD trajectory.** MDTraj was not installed in the development environment, so the MDTraj loader path is untested. The native multi-model PDB reader is tested.
 
@@ -21,7 +32,7 @@ The package and its end-to-end benchmark are complete. The 8 unit tests and all 
 |---|---|
 | `featurizer.py` | multi-model PDB reader and writer; optional MDTraj loader (DCD, XTC, …); φ, ψ, χ1 from backbone and side-chain atoms; 9 metastable states per residue (3 Ramachandran basins × 3 rotamers) and their occupancies; rational-switching contact network; iterative mass-weighted Kabsch alignment of several trajectories onto a common mean; mean structure μ_L and covariance C_L; dynamic cross-correlation |
 | `estimators.py` | `compute_dki`: first-order index `h_i = 2(1 − Σ_s sqrt(p_is q_is))`, `DKI = Σ h_i`, affinity `Π (1 − h_i/2)`, with Laplace (add-α) smoothing; `ledoit_wolf`: analytical shrinkage in O(np + p²), identical to scikit-learn; `compute_cki`: Bhattacharyya distance `D = D_mean + D_cov`, `D_cov = D_comm + D_rot` with `D_rot ≥ 0`; `spectral_fingerprint`: `F_L = {Δ ln λ_i, θ_i}` and principal angles |
-| `scaling.py` | pocket distances, shells `S(r) = {i : d(i, pocket) ≤ r}`, profile `CKI(r)`, distal exponent γ (log-log slope against `|S(r)|`), split-trajectory null baseline, moving-block bootstrap inside each half, integrated autocorrelation time |
+| `scaling.py` | pocket distances, shells `S(r) = {i : d(i, pocket) ≤ r}`, profile `CKI(r)`, distal exponent γ (log-log slope against `|S(r)|`), split-trajectory null baseline, moving-block bootstrap inside each half (the leaky `scheme="whole"` is kept only for demonstration), integrated autocorrelation time |
 
 The sample covariance of aligned Cartesian coordinates is always singular: alignment leaves six rigid-body null directions, and with fewer frames than `3N` many more appear. The raw `ln det C` is then `−∞`, and the index is infinite. Ledoit–Wolf shrinkage makes every covariance positive definite; the shrinkage weight is reported with every result.
 
@@ -102,8 +113,27 @@ Figures: `figures/fig07_correlation_maps.{png,pdf}` shows cross-correlation and 
 ```bash
 pip install -r requirements.txt
 python tests/test_kakutani_pharma.py          # or: python -m pytest tests
-python benchmark_allosteric_protein.py        # about 8 minutes; prints OVERALL ACCEPTANCE: PASS
+python benchmark_allosteric_protein.py        # about 15 minutes; prints OVERALL ACCEPTANCE: PASS
+python code/paper07_compute_tables.py         # analytic companion, writes results/paper07_*
+cd paper && pdflatex paper07_kakutani_pharma_pipeline.tex && pdflatex paper07_kakutani_pharma_pipeline.tex && pdflatex paper07_kakutani_pharma_pipeline.tex
 ```
+
+## Citation
+
+```bibtex
+@article{ChenChen2026KakutaniVII,
+  author  = {Chen, Zhengyi and Chen, Ruqing},
+  title   = {Statistical Pharmacology via Kakutani Dichotomy VII: The kakutani\_pharma Pipeline, Ledoit--Wolf Regularized CKI,
+             Split-Trajectory Null Subtraction, and Shell-Scaling Exponents in Multi-Domain Allostery},
+  year    = {2026},
+  doi     = {10.5281/zenodo.23039869},
+  url     = {https://doi.org/10.5281/zenodo.23039869}
+}
+```
+
+## Repository
+
+https://github.com/Ruqing1963/kakutani-statistical-pharmacology-VII
 
 ## Funding
 

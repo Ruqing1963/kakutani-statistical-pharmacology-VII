@@ -109,23 +109,31 @@ class BootstrapResult:
     gamma: np.ndarray            # bootstrap distribution of the distal exponent of the excess curve
     gamma_ci: tuple[float, float]
     block: int
+    excess_reps: np.ndarray      # (n_boot, n_radii) replicate excess curves
+    scheme: str
 
 
 def block_bootstrap(F_A: np.ndarray, F_B: np.ndarray, d: np.ndarray, radii: np.ndarray, r_min: float,
                     block: int, n_boot: int = 100, level: float = 0.95, seed: int = 0,
-                    shrinkage: str | None = "ledoit-wolf") -> BootstrapResult:
-    """Percentile confidence intervals of the split-null excess curve and of its distal exponent."""
+                    shrinkage: str | None = "ledoit-wolf", scheme: str = "within-halves") -> BootstrapResult:
+    """Percentile confidence intervals of the split-null excess curve and of its distal exponent.
+
+    scheme = "within-halves" (default) resamples blocks separately inside each contiguous half, so that no frame can
+    enter both halves of a replicate. scheme = "whole" resamples the whole trajectory before splitting; it is kept
+    only to demonstrate the cross-half leakage that deflates the null (see Paper VII, Theorem 4.1)."""
+    if scheme not in ("within-halves", "whole"):
+        raise ValueError(scheme)
     rng = np.random.default_rng(seed)
     ex, gam = [], []
 
-    def within_halves(n):
-        # resample blocks separately inside each contiguous half, so that the split structure is preserved and no
-        # frame can appear in both halves of a replicate
+    def resample(n):
+        if scheme == "whole":
+            return block_resample(n, block, rng)
         h = n // 2
         return np.r_[block_resample(h, block, rng), h + block_resample(h, block, rng)]
 
     for _ in range(n_boot):
-        ia, ib = within_halves(len(F_A)), within_halves(len(F_B))
+        ia, ib = resample(len(F_A)), resample(len(F_B))
         s = split_null(F_A[ia], F_B[ib], d, radii, shrinkage)
         ex.append(s["excess"])
         gam.append(fit_scaling_exponent(s["n_res"], s["excess"], s["radii"], r_min)[0])
@@ -134,4 +142,4 @@ def block_bootstrap(F_A: np.ndarray, F_B: np.ndarray, d: np.ndarray, radii: np.n
     g = gam[np.isfinite(gam)]
     gci = (float(np.quantile(g, a)), float(np.quantile(g, 1 - a))) if g.size else (np.nan, np.nan)
     return BootstrapResult(np.asarray(radii, float), np.quantile(ex, a, axis=0), np.quantile(ex, 1 - a, axis=0),
-                           np.median(ex, axis=0), gam, gci, block)
+                           np.median(ex, axis=0), gam, gci, block, ex, scheme)

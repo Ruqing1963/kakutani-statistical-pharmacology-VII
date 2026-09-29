@@ -1,0 +1,35 @@
+==============================================================================
+Paper VII companion: analytic constants and table bodies
+==============================================================================
+
+[Section 2] Zero modes of the elastic network (ANM cutoff 13 A)
+   loose random walk: dim ker H = 11; contacts A1-1|S-1 193, S-1|S-2 0, S-2|A1-2 28, A1-1|A1-2 0; springs across the S-1|S-2 cut c = 1; dim ker of the two halves = 6, 6; first nonzero eigenvalue 0.0032
+      eigenvalues 1..12: -3.16e-15, -2.59e-15, -1.21e-15, -1.04e-15, 4.18e-16, 1.49e-15, 1.73e-15, 3.07e-15, 3.09e-15, 7.33e-15, 9.23e-15, 3.24e-03
+    compact globules: dim ker H = 6; contacts A1-1|S-1 151, S-1|S-2 171, S-2|A1-2 150, A1-1|A1-2 0; springs across the S-1|S-2 cut c = 171; dim ker of the two halves = 6, 6; first nonzero eigenvalue 0.1117
+      eigenvalues 1..12: -1.91e-14, 5.56e-15, 1.71e-14, 2.52e-14, 5.83e-14, 6.80e-14, 1.12e-01, 1.34e-01, 1.87e-01, 4.88e-01, 5.22e-01, 7.88e-01
+  loose geometry: two rigid halves joined by c = 1 spring(s) -> dim ker H = 12 - c = 11 (observed 11): True
+
+[Section 3] Ledoit-Wolf shrinkage and the three-way decomposition
+  n =   200, p = 360: delta = 0.9168 (|diff to sklearn| 1.1e-16, rel. matrix diff 2.0e-16); lambda_min(S) = -1.87e-15, lambda_min(Sigma*) = 0.9867 >= delta mu = 0.9867
+  n =   100, p = 360: delta = 0.9310 (|diff to sklearn| 1.1e-16, rel. matrix diff 2.0e-16); lambda_min(S) = -3.27e-15, lambda_min(Sigma*) = 1.0102 >= delta mu = 1.0102
+  n =  6000, p = 360: delta = 0.2747 (|diff to sklearn| 5.6e-17, rel. matrix diff 1.9e-16); lambda_min(S) = 3.26e-01, lambda_min(Sigma*) = 0.5361 >= delta mu = 0.2995
+  benchmark, 200 frames < 3N = 360: sample covariance CKI = inf, Ledoit-Wolf CKI = 66.18 (delta = 0.157)
+     substrate: CKI 3.848 = mean 0.774 + comm 0.005 + rot 3.068 (closure 0.0e+00); delta_LW 0.0042; DKI 0.4209
+      effector: CKI 7.210 = mean 1.430 + comm 1.307 + rot 4.473 (closure -8.9e-16); delta_LW 0.0065; DKI 2.7009
+          both: CKI 7.573 = mean 1.761 + comm 1.326 + rot 4.486 (closure 0.0e+00); delta_LW 0.0060; DKI 2.6832
+   apo replica: CKI 3.099 = mean 0.051 + comm 0.012 + rot 3.036 (closure 0.0e+00); delta_LW 0.0047; DKI 0.1862
+
+[Section 4] Split-trajectory null and the block bootstrap
+  half = 3000 frames, block = 214 frames, m = 15 blocks per half
+  within-halves: expected fraction of distinct blocks in a half = 1 - (1 - 1/m)^m = 0.645
+  whole-trajectory resampling: a block of half 1 recurs in half 2 with probability ~ 1 - (1 - 1/2m)^m = 0.399
+     substrate: estimate 0.813; within-halves percentile [0.770, 1.202] (contains: True), bias +0.126, bias-shifted [0.644, 1.076], basic [0.424, 0.856]; whole-trajectory [3.056, 4.768] (contains: False, bias +3.058)
+      effector: estimate 4.112; within-halves percentile [3.828, 4.389] (contains: True), bias -0.009, bias-shifted [3.837, 4.398], basic [3.835, 4.396]; whole-trajectory [6.119, 7.962] (contains: False, bias +2.983)
+          both: estimate 4.492; within-halves percentile [4.287, 4.857] (contains: True), bias +0.086, bias-shifted [4.201, 4.771], basic [4.127, 4.697]; whole-trajectory [6.642, 8.329] (contains: False, bias +2.998)
+   apo replica: estimate 0.010; within-halves percentile [-0.101, 0.118] (contains: True), bias -0.013, bias-shifted [-0.088, 0.131], basic [-0.099, 0.120]; whole-trajectory [2.146, 3.920] (contains: False, bias +3.040)
+
+[Section 5] Shell scaling: sample excess curves and exact population curves
+     substrate: Hessian change supported on 9 residues; sample excess pocket 0.721 -> all 0.813, gamma 0.118 [0.052, 0.299]; population CKI pocket 0.777 -> all 0.777 (ratio 1.000), population gamma 0.000; DKI 0.4209, top-10 hits 9
+      effector: Hessian change supported on 80 residues; sample excess pocket 0.204 -> all 4.112, gamma 1.361 [1.302, 1.463]; population CKI pocket 0.188 -> all 4.285 (ratio 22.744), population gamma 1.339; DKI 2.7009, top-10 hits 10
+          both: Hessian change supported on 83 residues; sample excess pocket 1.114 -> all 4.492, gamma 0.881 [0.804, 0.915]; population CKI pocket 1.130 -> all 4.712 (ratio 4.168), population gamma 0.897; DKI 2.6832, top-10 hits 10
+   apo replica: Hessian change supported on 0 residues; sample excess pocket 0.014 -> all 0.010, gamma n/a; population CKI pocket 0.000 -> all 0.000 (ratio nan), population gamma nan; DKI 0.1862, top-10 hits None

@@ -420,6 +420,20 @@ def main() -> int:
         sp["gamma_defined"] = defined
         splits[st]["gamma"] = g
     write_csv(os.path.join(DATA, "bench_cki_profile.csv"), prof_rows)
+    rep_rows = []
+    for st in ("S", "E", "S+E", "R"):
+        whole = kp.block_bootstrap(F["apo"], F[st], d_pocket, radii, R_MIN_DISTAL, block, n_boot=N_BOOT, seed=SEED + 5,
+                                   scheme="whole")
+        out(f"  {st:>5}: resample-then-split (leaky) scheme: excess at r = {radii[-1]:.1f} A in "
+            f"[{whole.excess_lo[-1]:.3f}, {whole.excess_hi[-1]:.3f}] vs estimate {splits[st]['excess'][-1]:.3f}")
+        for scheme, bs in (("within-halves", boots[st]), ("whole", whole)):
+            for k in range(N_BOOT):
+                rep_rows.append({"state": st, "scheme": scheme, "replicate": k, "excess_pocket": bs.excess_reps[k, 0],
+                                 "excess_all": bs.excess_reps[k, -1], "gamma": bs.gamma[k],
+                                 "estimate_pocket": splits[st]["excess"][0], "estimate_all": splits[st]["excess"][-1],
+                                 "gamma_estimate": splits[st]["gamma"], "block": block,
+                                 "half_frames": N_FRAMES // 2})
+    write_csv(os.path.join(DATA, "bench_bootstrap_replicates.csv"), rep_rows)
     ctrl_ok = boots["R"].excess_lo[-1] <= 0 <= boots["R"].excess_hi[-1]
     sig_ok = all(boots[s].excess_lo[-1] > 0 for s in ("S", "E", "S+E"))
     gam_ok = boots["E"].gamma_ci[0] > boots["S"].gamma_ci[1]

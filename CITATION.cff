@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-title: "kakutani_pharma: Kakutani indices of conformational ensembles from molecular-dynamics trajectories (DKI, CKI, spectral fingerprint, pocket-centred finite-size scaling)"
+title: "Statistical Pharmacology via Kakutani Dichotomy VII: The kakutani_pharma Pipeline, Ledoit-Wolf Regularized CKI, Split-Trajectory Null Subtraction, and Shell-Scaling Exponents in Multi-Domain Allostery"
 type: software
 authors:
   - family-names: Chen
@@ -11,9 +11,22 @@ authors:
     given-names: Ruqing
     affiliation: "GUT Geoservice Inc., Montreal, Québec, Canada"
     email: ruqing@hotmail.com
+doi: 10.5281/zenodo.23039869
 date-released: 2026-09-29
-version: 0.1.0
+version: 1.0.0
 license: MIT
+repository-code: "https://github.com/Ruqing1963/kakutani-statistical-pharmacology-VII"
+preferred-citation:
+  type: article
+  title: "Statistical Pharmacology via Kakutani Dichotomy VII: The kakutani_pharma Pipeline, Ledoit-Wolf Regularized CKI, Split-Trajectory Null Subtraction, and Shell-Scaling Exponents in Multi-Domain Allostery"
+  authors:
+    - family-names: Chen
+      given-names: Zhengyi
+    - family-names: Chen
+      given-names: Ruqing
+  year: 2026
+  doi: 10.5281/zenodo.23039869
+  url: "https://doi.org/10.5281/zenodo.23039869"
 keywords:
   - Kakutani dichotomy
   - molecular dynamics

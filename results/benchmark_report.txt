@@ -4,7 +4,7 @@ kakutani_pharma benchmark - four-domain allosteric protein (A1-1 | S-1 | S-2 | A
 ==============================================================================
 
 [model] pocket (S-1) residues: 9, effector-site (A1-2) residues: 7, interface residues S-1|S-2|A1-2: 77; slowest apo mode lambda = 0.1117
-  trajectories simulated in 14 s
+  trajectories simulated in 13 s
 
 [1] Featurizer
   dihedral binning agrees with the generating metastable states in a fraction 0.999997 of all residue-frames (well noise 12 deg, basin boundaries >= 60 deg away)  PASS
@@ -26,15 +26,19 @@ kakutani_pharma benchmark - four-domain allosteric protein (A1-1 | S-1 | S-2 | A
 
 [3] Pocket-centred shell scaling with split-trajectory null and block bootstrap
   radii (A): 0.0, 5.1, 8.5, 10.4, 13.5, 15.1, 18.6, 21.9, 27.7, 33.5; distal fit r >= 15.0 A; block 214 frames; 40 replicates
-      S: excess CKI at r = 33.5 A (all residues) = 0.813 [0.770, 1.202]; pocket shell 0.721; distal gamma = 0.118 [0.052, 0.299]  (109 s)
-      E: excess CKI at r = 33.5 A (all residues) = 4.112 [3.828, 4.389]; pocket shell 0.204; distal gamma = 1.361 [1.302, 1.463]  (108 s)
-    S+E: excess CKI at r = 33.5 A (all residues) = 4.492 [4.287, 4.857]; pocket shell 1.114; distal gamma = 0.881 [0.804, 0.915]  (109 s)
+      S: excess CKI at r = 33.5 A (all residues) = 0.813 [0.770, 1.202]; pocket shell 0.721; distal gamma = 0.118 [0.052, 0.299]  (111 s)
+      E: excess CKI at r = 33.5 A (all residues) = 4.112 [3.828, 4.389]; pocket shell 0.204; distal gamma = 1.361 [1.302, 1.463]  (111 s)
+    S+E: excess CKI at r = 33.5 A (all residues) = 4.492 [4.287, 4.857]; pocket shell 1.114; distal gamma = 0.881 [0.804, 0.915]  (110 s)
       R: excess CKI at r = 33.5 A (all residues) = 0.010 [-0.101, 0.118]; pocket shell 0.014; distal gamma = n/a (excess consistent with 0)  (111 s)
+      S: resample-then-split (leaky) scheme: excess at r = 33.5 A in [3.056, 4.768] vs estimate 0.813
+      E: resample-then-split (leaky) scheme: excess at r = 33.5 A in [6.119, 7.962] vs estimate 4.112
+    S+E: resample-then-split (leaky) scheme: excess at r = 33.5 A in [6.642, 8.329] vs estimate 4.492
+      R: resample-then-split (leaky) scheme: excess at r = 33.5 A in [2.146, 3.920] vs estimate 0.010
   Acceptance: control excess CI contains 0  PASS; ligand excess CI excludes 0 (S, E, S+E)  PASS
   Acceptance: distal exponent separates the allosteric effector from the local substrate (CI_E above CI_S)  PASS
 
 [4] Figures
   figures/fig07_correlation_maps.{png,pdf}, figures/fig07_kakutani_diagnostics.{png,pdf}
 
-runtime 472 s
+runtime 907 s
 OVERALL ACCEPTANCE: PASS
